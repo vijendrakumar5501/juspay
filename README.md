@@ -31,6 +31,13 @@ Works seamlessly on both **desktop** and **mobile** devices.
 
 ---
 
+### Functionality
+- **Filtering, searching, and sorting** of data.
+- **Pagination** for large datasets.
+
+
+  ---
+
 ## 🚀 Installation & Setup (Step-by-Step)
 
 **Step 1: Install Node.js and npm**  
