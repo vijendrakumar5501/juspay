@@ -3,10 +3,10 @@ import React from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
 const data = [
-  { name: "Direct", value: 300.56, color: "#111827" },
-  { name: "Affiliate", value: 135.18, color: "#A3E635" },
-  { name: "Sponsored", value: 154.02, color: "#818CF8" },
-  { name: "E-mail", value: 48.96, color: "#60A5FA" },
+  { name: "Direct", value: 300.56, color: "#95a4fc" },
+  { name: "Affiliate", value: 135.18, color: "#B1E3FF" },
+  { name: "Sponsored", value: 154.02, color: "#1C1C1C" },
+  { name: "E-mail", value: 48.96, color: "#BAEDBD" },
 ];
 
 const TotalSales = () => {

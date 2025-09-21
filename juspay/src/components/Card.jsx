@@ -1,7 +1,8 @@
 export default function Card({ title, value, change, changeType, bg, className }) {
   return (
     <div
-      className={`p-4 rounded-lg shadow ${bg} ${className || ""} flex flex-col justify-start gap-3`}
+      className={`p-4 rounded-lg shadow ${className || ""} flex flex-col justify-start gap-3`}
+       style={{ backgroundColor: bg }}
     >
       {/* Title */}
       <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-300">

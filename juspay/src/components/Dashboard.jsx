@@ -16,10 +16,10 @@ const Dashboard = () => {
             {/* Cards + BarGraph */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
               <div className="grid grid-cols-2 gap-4">
-                <Card title="Customers" value="3,781" change="+11.01%" changeType="up" bg="bg-blue-100" />
-                <Card title="Orders" value="1,219" change="-0.03%" changeType="down" bg="bg-gray-100" />
-                <Card title="Revenue" value="$695" change="+15.03%" changeType="up" bg="bg-gray-100" />
-                <Card title="Growth" value="30.1%" change="+6.08%" changeType="up" bg="bg-gray-100" />
+                <Card title="Customers" value="3,781" change="+11.01%" changeType="up" bg="#E3F5FF" />
+                <Card title="Orders" value="1,219" change="-0.03%" changeType="down" bg="#F7F9FB" />
+                <Card title="Revenue" value="$695" change="+15.03%" changeType="up" bg="#F7F9FB" />
+                <Card title="Growth" value="30.1%" change="+6.08%" changeType="up" bg="#E5ECF6" />
               </div>
 
               <div className="bg-white p-4 rounded-lg shadow w-full lg:w-[90%]">
