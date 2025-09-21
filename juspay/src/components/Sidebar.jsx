@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import byeWind from "../assets/ByeWind.svg"
 import {
   Home,
   ShoppingBag,
@@ -17,43 +18,45 @@ const MENU = [
   {
     title: "Favorites",
     items: [
-      { name: "Overview", icon: Home, active: false },
-      { name: "Projects", icon: FolderKanban, active: false },
+      { name: "Overview", icon: Home, path: "/overview" },
+      { name: "Projects", icon: FolderKanban, path: "/projects" },
     ],
   },
   {
     title: "Dashboards",
     items: [
-      { name: "Default", icon: Home, active: true },
-      { name: "eCommerce", icon: ShoppingBag, active: false },
-      { name: "Projects", icon: FolderKanban, active: false },
-      { name: "Online Courses", icon: Book, active: false },
+      { name: "Dashboard", icon: Home, path: "/dashboard" },
+      { name: "eCommerce", icon: ShoppingBag, path: "/ecommerce" },
+      { name: "Projects", icon: FolderKanban, path: "/dashboard-projects" },
+      { name: "Online Courses", icon: Book, path: "/courses" },
     ],
   },
   {
     title: "Settings",
     items: [
-      { name: "User Profile", icon: User, active: false },
-      { name: "Account", icon: Settings, active: false },
-      { name: "Corporate", icon: FileText, active: false },
-      { name: "Blog", icon: PenTool, active: false },
-      { name: "Social", icon: MessageCircle, active: false },
+      { name: "User Profile", icon: User, path: "/profile" },
+      { name: "Account", icon: Settings, path: "/account" },
+      { name: "Corporate", icon: FileText, path: "/corporate" },
+      { name: "Blog", icon: PenTool, path: "/blog" },
+      { name: "Social", icon: MessageCircle, path: "/social" },
     ],
   },
 ];
 
-export default function Sidebar() {
-  const [open, setOpen] = useState(false);
+export default function Sidebar({ open, setOpen }) {
+  const location = useLocation();
 
   return (
     <>
       {/* Mobile toggle button */}
-      <button
-        className="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded shadow"
+      <div className="mb-6 mr-10">
+        <button
+        className="md:hidden fixed top-4 left-4 z-50  p-2 rounded shadow"
         onClick={() => setOpen(!open)}
       >
-        {open ? <X size={24} /> : <Menu size={24} />}
+        {open ? <X size={20} /> : <Menu size={20}  />}
       </button>
+      </div>
 
       <aside
         className={`
@@ -64,21 +67,38 @@ export default function Sidebar() {
         `}
       >
         <div>
-          <h1 className="text-lg font-bold mb-6">ByeWind</h1>
+          
+          <div className="flex items-center space-x-3 mb-6">
+  <img
+    src={byeWind}
+    alt="Logo"
+    className="w-6 h-6 object-contain"
+  />
+
+  <h1 className="text-lg font-bold mb-0">ByeWind</h1>
+</div>
           {MENU.map((section, idx) => (
             <nav key={idx} className="mb-6">
-              <p className="text-gray-400 uppercase text-xs mb-2">{section.title}</p>
+              <p className="text-gray-400 uppercase text-xs mb-2">
+                {section.title}
+              </p>
               {section.items.map((item, i) => (
-                <button
+                <Link
                   key={i}
+                  to={item.path=='/dashboard'?"/dashboard":item.path=='/ecommerce'?'/ecommerce':""}
+                  onClick={() => setOpen(false)} // close sidebar on mobile
                   className={`
                     flex items-center space-x-2 w-full text-left p-2 rounded-md
-                    ${item.active ? "bg-gray-100 text-black" : "text-gray-600 hover:bg-gray-50"}
+                    ${
+                      location.pathname === item.path
+                        ? "bg-gray-100 text-black"
+                        : "text-gray-600 hover:bg-gray-50"
+                    }
                   `}
                 >
                   <item.icon size={18} />
                   <span>{item.name}</span>
-                </button>
+                </Link>
               ))}
             </nav>
           ))}
@@ -88,7 +108,7 @@ export default function Sidebar() {
       {/* Overlay for mobile */}
       {open && (
         <div
-          className="fixed  inset-0 bg-black opacity-20 md:hidden z-40"
+          className="fixed inset-0 bg-black opacity-20 md:hidden z-40"
           onClick={() => setOpen(false)}
         />
       )}
