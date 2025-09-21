@@ -26,20 +26,20 @@ export function BarGraph() {
   return (
     <ResponsiveContainer width="100%" height={170}>
       <BarChart data={data} barCategoryGap="30%">
-        {/* Grid */}
+    
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
 
-        {/* X Axis */}
+        
         <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#6B7280" }} />
 
-        {/* Y Axis */}
+        
         <YAxis
           axisLine={false}
           tickLine={false}
           tick={{ fontSize: 12, fill: "#6B7280" }}
         />
 
-        {/* Tooltip */}
+        
         <Tooltip
           cursor={{ fill: "rgba(156, 163, 175, 0.1)" }}
           contentStyle={{
@@ -50,18 +50,18 @@ export function BarGraph() {
           }}
         />
 
-        {/* Stacked Bars */}
+      
         <Bar
           dataKey="blue"
           stackId="a"
-          fill="#9CB7CF" // solid blue
+          fill="#9CB7CF" 
           barSize={30}
         />
         <Bar
           dataKey="lightBlue"
           stackId="a"
-          fill="#D9E5F2" // solid light blue
-          radius={[5, 5, 0, 0]} // curve only applies to the top bar
+          fill="#D9E5F2" 
+          radius={[5, 5, 0, 0]} 
 
           barSize={30}
         />
@@ -84,13 +84,13 @@ export function LineGraph() {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <LineChart data={lineData}>
-        {/* Grid */}
+        
         <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-        {/* X Axis */}
+       
         <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#6B7280" }} />
-        {/* Y Axis */}
+        
         <YAxis tick={{ fontSize: 12, fill: "#6B7280" }} axisLine={false} tickLine={false} />
-        {/* Tooltip */}
+        
         <Tooltip
           contentStyle={{
             backgroundColor: "white",
@@ -99,7 +99,7 @@ export function LineGraph() {
             fontSize: "12px",
           }}
         />
-        {/* Lines */}
+        
         <Line type="monotone" dataKey="current" stroke="#9CB7CF" strokeWidth={3} dot={{ r: 4 }} />
         <Line type="monotone" dataKey="previous" stroke="#9CA3AF" strokeWidth={3} dot={{ r: 4 }} />
       </LineChart>

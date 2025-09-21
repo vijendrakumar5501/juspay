@@ -5,14 +5,7 @@ import L from "leaflet";
 
 
 delete L.Icon.Default.prototype._getIconUrl;
-// L.Icon.Default.mergeOptions({
-//   iconRetinaUrl:
-//     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-//   iconUrl:
-//     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-//   shadowUrl:
-//     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-// });
+
 
 const locations = [
   { name: "New York", coordinates: [40.7128, -74.006], revenue: 72000 },
@@ -45,7 +38,7 @@ const Location = () => {
         <TileLayer
 
   url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-  // attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
+
   subdomains={["a", "b", "c", "d"]}
 />
 

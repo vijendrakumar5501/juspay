@@ -1,5 +1,4 @@
 
-
 import { Bell, Search, Sun, RefreshCw } from "lucide-react";
 
 export default function Navbar() {

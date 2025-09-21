@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   Calendar,
   MoreHorizontal,
@@ -7,64 +7,98 @@ import {
   ArrowUpDown,
   Search,
 } from "lucide-react";
-import IconSet4 from "../assets/contacts/IconSet.svg";
-import IconSet3 from "../assets/contacts/IconSet3.svg";
-import IconSet2 from "../assets/contacts/IconSet2.svg";
 import IconSet1 from "../assets/contacts/IconSet1.svg";
+import IconSet2 from "../assets/contacts/IconSet2.svg";
+import IconSet3 from "../assets/contacts/IconSet3.svg";
+import IconSet4 from "../assets/contacts/IconSet.svg";
 import cd03 from "../assets/contacts/3D03.svg";
 import Female09 from "../assets/contacts/Female09.svg";
 
-const orders = [
+// Sample orders data
+const ordersData = [
   {
     id: "#CM9801",
     user: { name: "Natali Craig", avatar: IconSet1 },
     project: "Landing Page",
-    address: "Meadow Lane Oakland",
+    address: "Meadow Lane, Oakland",
     date: "Just now",
     status: "In Progress",
   },
   {
     id: "#CM9802",
     user: { name: "Kate Morrison", avatar: IconSet2 },
-    project: "CRM Admin pages",
-    address: "Larry San Francisco",
-    date: "A minute ago",
+    project: "CRM Admin Pages",
+    address: "Larry Street, San Francisco",
+    date: "5 minutes ago",
     status: "Complete",
   },
   {
-    id: "#CM9803",
+    id: `#CM${Math.floor(1000 + Math.random() * 9000)}`,
     user: { name: "Drew Cano", avatar: IconSet4 },
     project: "Client Project",
-    address: "Bagwell Avenue Ocala",
+    address: "Bagwell Avenue, Ocala",
     date: "1 hour ago",
     status: "Pending",
   },
   {
-    id: "#CM9804",
+    id: `#CM${Math.floor(1000 + Math.random() * 9000)}`,
     user: { name: "Orlando Diggs", avatar: IconSet3 },
     project: "Admin Dashboard",
-    address: "Washburn Baton Rouge",
+    address: "Washburn Road, Baton Rouge",
     date: "Yesterday",
     status: "Approved",
   },
   {
-    id: "#CM9805",
+    id: `#CM${Math.floor(1000 + Math.random() * 9000)}`,
     user: { name: "Andi Lane", avatar: Female09 },
     project: "App Landing Page",
-    address: "Nest Lane Olivette",
+    address: "Nest Lane, Olivette",
     date: "Feb 2, 2023",
     status: "Rejected",
   },
   {
-    id: "#CM9806",
-    user: { name: "andy Ortan", avatar: cd03 },
-    project: "App Landing Page",
-    address: "Nest Lane Olivette",
-    date: "Feb 2, 2023",
+    id: `#CM${Math.floor(1000 + Math.random() * 9000)}`,
+    user: { name: "Andy Ortan", avatar: cd03 },
+    project: "Marketing Website",
+    address: "Maple Street, Denver",
+    date: "Feb 10, 2023",
+    status: "In Progress",
+  },
+  {
+    id: `#CM${Math.floor(1000 + Math.random() * 9000)}`,
+    user: { name: "Maya Patel", avatar: IconSet1 },
+    project: "E-commerce App",
+    address: "Sunset Boulevard, Los Angeles",
+    date: "3 hours ago",
+    status: "Pending",
+  },
+  {
+    id: `#CM${Math.floor(1000 + Math.random() * 9000)}`,
+    user: { name: "Liam Johnson", avatar: IconSet2 },
+    project: "Portfolio Site",
+    address: "Elm Street, Chicago",
+    date: "2 days ago",
+    status: "Complete",
+  },
+  {
+    id: `#CM${Math.floor(1000 + Math.random() * 9000)}`,
+    user: { name: "Sophie Turner", avatar: IconSet3 },
+    project: "Landing Page Redesign",
+    address: "Pine Avenue, Seattle",
+    date: "Today",
+    status: "Approved",
+  },
+  {
+    id: `#CM${Math.floor(1000 + Math.random() * 9000)}`,
+    user: { name: "Ethan Brown", avatar: IconSet4 },
+    project: "CRM Integration",
+    address: "Oak Road, Austin",
+    date: "1 week ago",
     status: "Rejected",
   },
 ];
 
+// Status colors
 const statusColors = {
   "In Progress": "text-purple-500",
   Complete: "text-green-500",
@@ -75,39 +109,144 @@ const statusColors = {
 
 export default function OrderList() {
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilterInput, setStatusFilterInput] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [sortField, setSortField] = useState(null);
+  const [sortDirection, setSortDirection] = useState("asc");
+  const itemsPerPage = 6;
+
+  // Filter + Search + Sort
+  const filteredOrders = useMemo(() => {
+    let data = [...ordersData];
+
+    // Apply status filter
+    if (statusFilter) {
+      data = data.filter((o) => o.status === statusFilter);
+    }
+
+    // Apply search
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      data = data.filter(
+        (o) =>
+          o.id.toLowerCase().includes(term) ||
+          o.user.name.toLowerCase().includes(term) ||
+          o.project.toLowerCase().includes(term) ||
+          o.address.toLowerCase().includes(term)
+      );
+    }
+
+    // Apply sorting
+    if (sortField) {
+      data.sort((a, b) => {
+        let aField = a[sortField];
+        let bField = b[sortField];
+
+        // Special handling for user
+        if (sortField === "user") {
+          aField = a.user.name;
+          bField = b.user.name;
+        }
+
+        if (typeof aField === "string") {
+          return sortDirection === "asc"
+            ? aField.localeCompare(bField)
+            : bField.localeCompare(aField);
+        }
+        return 0;
+      });
+    }
+
+    return data;
+  }, [searchTerm, statusFilter, sortField, sortDirection]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const paginatedOrders = filteredOrders.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
+  // Sorting handler
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
 
   return (
     <div className="p-4 md:p-6">
       {/* Header */}
       <div className="mb-4">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">
-          Order List
-        </h2>
+        <h2 className="text-lg font-semibold text-gray-800 mb-4">Order List</h2>
+
+        {/* Actions + Search + Filter */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-sky-50 w-full p-2 rounded">
-          {/* Actions */}
           <div className="flex gap-2">
             <button className="p-2 hover:bg-gray-100 rounded">
               <Plus size={18} />
             </button>
-            <button className="p-2 hover:bg-gray-100 rounded">
+            <button
+              className="p-2 hover:bg-gray-100 rounded"
+              onClick={() => {
+                setStatusFilter(statusFilterInput);
+                setPage(1);
+
+                setSortField("user");
+                setSortDirection("asc");
+              }}
+            >
               <Filter size={18} />
             </button>
-            <button className="p-2 hover:bg-gray-100 rounded">
+
+            <button
+              className="p-2 hover:bg-gray-100 rounded"
+              onClick={() => {
+                setStatusFilter(statusFilterInput);
+                setPage(1);
+
+                setSortField("user");
+                setSortDirection("asc");
+              }}
+            >
               <ArrowUpDown size={18} />
             </button>
           </div>
 
-          {/* Search */}
-          <div className="relative w-full sm:w-64">
-            <input
-              type="text"
-              placeholder="Search"
-              className="border border-gray-300 rounded pl-8 pr-2 py-1 w-full text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
-            />
-            <Search
-              size={16}
-              className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400"
-            />
+          <div className="flex gap-2 items-center w-full sm:w-auto">
+            <div className="relative w-full sm:w-64">
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setPage(1);
+                }}
+                className="border border-gray-300 rounded pl-8 pr-2 py-1 w-full text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
+              />
+              <Search
+                size={16}
+                className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+            </div>
+
+            <select
+              className="border border-gray-300 rounded p-1 text-sm"
+              value={statusFilterInput}
+              onChange={(e) => setStatusFilterInput(e.target.value)}
+            >
+              <option value="">All Status</option>
+              {Object.keys(statusColors).map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
@@ -120,17 +259,37 @@ export default function OrderList() {
               <th className="p-3">
                 <input type="checkbox" />
               </th>
-              <th className="p-3">Order ID</th>
-              <th className="p-3">User</th>
-              <th className="p-3">Project</th>
+              <th
+                className="p-3 cursor-pointer"
+                onClick={() => handleSort("id")}
+              >
+                Order ID
+              </th>
+              <th
+                className="p-3 cursor-pointer"
+                onClick={() => handleSort("user")}
+              >
+                User
+              </th>
+              <th
+                className="p-3 cursor-pointer"
+                onClick={() => handleSort("project")}
+              >
+                Project
+              </th>
               <th className="p-3">Address</th>
               <th className="p-3">Date</th>
-              <th className="p-3">Status</th>
+              <th
+                className="p-3 cursor-pointer"
+                onClick={() => handleSort("status")}
+              >
+                Status
+              </th>
               <th className="p-3"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {orders.map((order, idx) => (
+            {paginatedOrders.map((order, idx) => (
               <tr key={idx} className="hover:bg-gray-50">
                 <td className="p-3">
                   <input type="checkbox" />
@@ -163,13 +322,10 @@ export default function OrderList() {
         </table>
       </div>
 
-      {/* Cards (Mobile) */}
+      {/* Mobile Cards */}
       <div className="grid gap-3 md:hidden">
-        {orders.map((order, idx) => (
-          <div
-            key={idx}
-            className="border rounded-lg p-3 shadow-sm bg-white"
-          >
+        {paginatedOrders.map((order, idx) => (
+          <div key={idx} className="border rounded-lg p-3 shadow-sm bg-white">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <input type="checkbox" />
@@ -197,7 +353,9 @@ export default function OrderList() {
               <Calendar size={14} /> {order.date}
             </p>
             <p
-              className={`text-sm font-medium mt-1 ${statusColors[order.status]}`}
+              className={`text-sm font-medium mt-1 ${
+                statusColors[order.status]
+              }`}
             >
               {order.status}
             </p>
@@ -214,7 +372,7 @@ export default function OrderList() {
         >
           {"<"}
         </button>
-        {[1, 2, 3, 4, 5].map((num) => (
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
           <button
             key={num}
             onClick={() => setPage(num)}
@@ -226,7 +384,7 @@ export default function OrderList() {
           </button>
         ))}
         <button
-          disabled={page === 5}
+          disabled={page === totalPages}
           onClick={() => setPage(page + 1)}
           className="px-2 py-1 disabled:opacity-50"
         >

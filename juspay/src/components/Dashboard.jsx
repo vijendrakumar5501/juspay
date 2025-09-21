@@ -9,7 +9,6 @@ import Aside from "./Aside";
 const Dashboard = () => {
   return (
 <div>
-     {/* Page Content */}
         <div className=" grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-6">
           {/* Main Column */}
           <div className=" p-6 space-y-6 ">
@@ -28,7 +27,6 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Revenue LineGraph + Location */}
             <div className="flex flex-col lg:flex-row lg:w-[95%] gap-6">
               <div className="bg-white p-4 rounded-lg shadow flex-1">
                 <h3 className="mb-4 font-semibold text-sm">Revenue</h3>
@@ -40,7 +38,6 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Sells Section */}
             <div className="flex flex-col lg:flex-row gap-6 lg:w-[95%]">
               <div className="bg-white p-4 rounded-lg shadow flex-1">
                 <TopSellingProducts />
@@ -52,7 +49,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Right Sidebar */}
+         
           
           <aside className="hidden lg:block border-l border-gray-200 lg:pl-6">
             

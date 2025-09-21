@@ -29,9 +29,7 @@ export default function Notifications() {
 
   return (
     <div>
-      {/* <h2 className="text-gray-500 text-xs font-semibold uppercase mb-2">
-        Notifications
-      </h2> */}
+     
       <ul className="space-y-3">
         {notifications.map((item, idx) => (
           <li key={idx} className="flex items-start space-x-2">
